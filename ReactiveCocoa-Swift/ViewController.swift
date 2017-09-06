@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var changeButton: UIButton!
     
+    @IBOutlet weak var textField: UITextField!
+    
     var name = ""
     
     override func viewDidLoad() {
