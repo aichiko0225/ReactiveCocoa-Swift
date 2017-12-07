@@ -150,23 +150,25 @@ scopedExample("Property") {
     
     let property = MutableProperty("ash")
     
-    let labelProperty = ValidatingProperty<String?, NoError>("") { input in
+    let textFieldProperty = ValidatingProperty<String?, NoError>("") { input in
         return .valid
     }
     
     let textField = UITextField()
     
-    labelProperty <~ textField.reactive.textValues
+    textFieldProperty <~ textField.reactive.textValues
     
     label.reactive.text <~ property
     
-    labelProperty.result.signal.observeValues({ (result) in
+    textFieldProperty.result.signal.observeValues({ (result) in
         print("result === ", result)
     })
     
     textField.text = "2333"
     
     textField.text = "45555"
+    
+    
 }
 
 

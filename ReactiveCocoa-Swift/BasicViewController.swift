@@ -30,8 +30,6 @@ class BasicViewController: UIViewController {
         
         label.reactive.text <~ viewModel.username
         
-        label.text = "2222"
-        
         print(viewModel.username.value)
         
         self.view.addSubview(label)
@@ -44,6 +42,37 @@ class BasicViewController: UIViewController {
             print(viewModel.username.value)
         }
         
+        
+        let textFieldProperty = ValidatingProperty<String?, NoError>("") { input in
+            return .valid
+        }
+        
+        let textField = UITextField(frame: CGRect.init(x: 0, y: 200, width: 300, height: 44))
+        
+        textFieldProperty <~ textField.reactive.continuousTextValues
+        
+        
+        textFieldProperty.result.signal.observeValues({ (result) in
+            print("result === ", result)
+        })
+        
+        textFieldProperty.producer.start { (event) in
+            print("event === ", event)
+        }
+        
+        textField.reactive.continuousTextValues.observe { (event) in
+            print(event)
+        }
+        
+        textField.text = "2333"
+        
+        textField.text = "45555"
+        
+        self.view.addSubview(textField)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+            textFieldProperty.value = "23334444"
+        }
         
         
     }
