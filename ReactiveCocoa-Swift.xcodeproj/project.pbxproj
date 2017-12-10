@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		182D41F71FCEA3D800F00B90 /* BasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182D41F61FCEA3D800F00B90 /* BasicViewController.swift */; };
+		18C1BA5E1FDA70AE0085E782 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C1BA5D1FDA70AE0085E782 /* LoginViewController.swift */; };
 		18C7BB021FCFED4D002FFC66 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C7BB011FCFED4D002FFC66 /* ViewModel.swift */; };
 		18D7F97B1FB84A2D0017FB9E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D7F97A1FB84A2D0017FB9E /* SearchViewController.swift */; };
 		18D7F97D1FB859130017FB9E /* OnlineSearchingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D7F97C1FB859130017FB9E /* OnlineSearchingController.swift */; };
@@ -40,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		182D41F61FCEA3D800F00B90 /* BasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewController.swift; sourceTree = "<group>"; };
+		18C1BA5D1FDA70AE0085E782 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		18C7BB011FCFED4D002FFC66 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		18C7BB031FD0FF92002FFC66 /* ReactiveCocoa-Signal.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "ReactiveCocoa-Signal.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		18D7F97A1FB84A2D0017FB9E /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				18D7F97C1FB859130017FB9E /* OnlineSearchingController.swift */,
 				18C7BB011FCFED4D002FFC66 /* ViewModel.swift */,
 				182D41F61FCEA3D800F00B90 /* BasicViewController.swift */,
+				18C1BA5D1FDA70AE0085E782 /* LoginViewController.swift */,
 				18C7BB031FD0FF92002FFC66 /* ReactiveCocoa-Signal.playground */,
 				D57D2C171F5DA94C00039C7E /* Main.storyboard */,
 				D57D2C1A1F5DA94C00039C7E /* Assets.xcassets */,
@@ -358,6 +361,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18C1BA5E1FDA70AE0085E782 /* LoginViewController.swift in Sources */,
 				18D7F97B1FB84A2D0017FB9E /* SearchViewController.swift in Sources */,
 				182D41F71FCEA3D800F00B90 /* BasicViewController.swift in Sources */,
 				D57D2C161F5DA94C00039C7E /* ViewController.swift in Sources */,

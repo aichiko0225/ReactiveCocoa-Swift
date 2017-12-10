@@ -13,7 +13,22 @@ import Result
 
 /// 一些基础知识的介绍
 class BasicViewController: UIViewController {
-
+    
+    struct CCError: Error {
+        var reason: String
+    }
+    
+    let errorLabel: UILabel = UILabel()
+    let sendButton: UIButton = UIButton(type: .custom)
+    let phoneNumerTextField = UITextField()
+    
+    var errorText = MutableProperty("123")
+    var phoneNumer = MutableProperty("222")
+    
+    var validPhoneNumber = ValidatingProperty<String, CCError>.init("") { (str) -> ValidatingProperty<String, BasicViewController.CCError>.Decision in
+        return str.count == 11 ? .valid : .invalid(CCError(reason: "23333"))
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,60 +36,41 @@ class BasicViewController: UIViewController {
         
         // scopedExample()
         
+        self.view.addSubview(phoneNumerTextField)
+        self.view.addSubview(errorLabel)
+        self.view.addSubview(sendButton)
         
-        let viewModel = CCViewModel()
-        viewModel.test()
+        phoneNumerTextField.frame.size = CGSize(width: 300, height: 44)
+        phoneNumerTextField.center = self.view.center
         
+        sendButton.frame = CGRect(x: 0, y: 500, width: 200, height: 44)
+        sendButton.frame.origin.y = phoneNumerTextField.frame.origin.y + 80
+        sendButton.center.x = phoneNumerTextField.center.x
         
-        let label = UILabel(frame: CGRect.init(x: 0, y: 0, width: 100, height: 100))
+        errorLabel.frame = CGRect(x: 0, y: 600, width: 200, height: 44)
+        errorLabel.frame.origin.y = sendButton.frame.origin.y + 80
+        errorLabel.center.x = phoneNumerTextField.center.x
         
-        label.reactive.text <~ viewModel.username
+        errorLabel.reactive.text <~ errorText
+        sendButton.reactive.isEnabled <~ errorText.map({$0.count == 0})
+        sendButton.reactive.backgroundColor <~ errorText.map{ $0.count == 0 ? UIColor.red : UIColor.gray } //只是演示一下什么都可以绑
+        phoneNumerTextField.reactive.text <~ phoneNumer //绑定有效输入到输入框
         
-        print(viewModel.username.value)
-        
-        self.view.addSubview(label)
-        
-        label.center = self.view.center
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-            label.text = "3333"
-            
-            print(viewModel.username.value)
-        }
-        
-        
-        let textFieldProperty = ValidatingProperty<String?, NoError>("") { input in
-            return .valid
-        }
-        
-        let textField = UITextField(frame: CGRect.init(x: 0, y: 200, width: 300, height: 44))
-        
-        textFieldProperty <~ textField.reactive.continuousTextValues
-        
-        
-        textFieldProperty.result.signal.observeValues({ (result) in
-            print("result === ", result)
+        phoneNumer <~ phoneNumerTextField.reactive.continuousTextValues.map({ (text) -> String in
+            if text?.count ?? 0 > 11 {
+                let phoneNumer = (text ?? "").substring(to: (text?.index((text?.startIndex)!, offsetBy: 11))!) //1. 最多输入11个数字, 多余部分截掉
+                let isValidPhoneNum = NSPredicate(format: "SELF MATCHES %@", "正则表达式...").evaluate(with: phoneNumer) //2. 检查手机格式是否正确
+                self.errorText.value = isValidPhoneNum ? "" :"手机号格式不正确" //2. 格式不正确显示错误信息
+                return phoneNumer //3. 返回截取后的有效输入
+            }
+            return text!
         })
         
-        textFieldProperty.producer.start { (event) in
-            print("event === ", event)
-        }
+        validPhoneNumber <~ phoneNumerTextField.reactive.continuousTextValues.skipNil()
         
-        textField.reactive.continuousTextValues.observe { (event) in
+        validPhoneNumber.signal.observe { (event) in
             print(event)
         }
-        
-        textField.text = "2333"
-        
-        textField.text = "45555"
-        
-        self.view.addSubview(textField)
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-            textFieldProperty.value = "23334444"
-        }
-        
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,8 +79,6 @@ class BasicViewController: UIViewController {
     }
     
     // MARK:  Signal 部分
-    
-    
     
     
     
@@ -110,7 +104,6 @@ class BasicViewController: UIViewController {
         producer.startWithValues { (value) in
             print(value)
         }
-        
     }
     
 

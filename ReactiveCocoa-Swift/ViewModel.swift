@@ -12,6 +12,36 @@ import Result
 import ReactiveCocoa
 
 
+class LoginViewModel {
+    struct CCError: Error {
+        
+    }
+    let username = ValidatingProperty<String, CCError>("") { (str) -> ValidatingProperty<String, CCError>.Decision in
+        return str.count > 0 ? .valid : .invalid(CCError())
+    }
+    
+    let password = ValidatingProperty<String, CCError>("") { (str) -> ValidatingProperty<String, CCError>.Decision in
+        return str.count > 0 ? .valid : .invalid(CCError())
+    }
+    
+    var error: Signal<String?, NoError>
+    
+    var buttonEnabled: MutableProperty<Bool> = MutableProperty(false)
+    
+    init() {
+        error = Property.combineLatest(username.result, password.result)
+            .signal
+            .debounce(0.1, on: QueueScheduler.main)
+            .map({ (usernameResult, passwordResult) -> String? in
+                if usernameResult.isInvalid || passwordResult.isInvalid {
+                    return nil
+                }else {
+                    return String.init(format: "username == %@ password == %@", usernameResult.value!, passwordResult.value!)
+                }
+        })
+    }
+}
+
 
 class CCViewModel {
     
@@ -32,7 +62,6 @@ class CCViewModel {
         root.value = "233"
         
         print(outer.result.value)
-        
     }
     
     

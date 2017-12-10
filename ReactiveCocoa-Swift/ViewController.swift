@@ -24,12 +24,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        print(nameLabel.reactive.text)
-        
         let (signal, observer) = Signal<String, NSError>.pipe()
         
         signal.map { (text) -> Bool in
-            return text.characters.count > 0
+            return text.count > 0
         }.observeCompleted {
             print("observeCompleted")
         }
