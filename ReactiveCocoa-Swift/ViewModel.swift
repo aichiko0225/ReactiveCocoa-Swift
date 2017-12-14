@@ -11,6 +11,16 @@ import ReactiveSwift
 import Result
 import ReactiveCocoa
 
+class CCTableViewModel {
+    struct CCError: Error {
+        var reason: String
+        
+        static let noDataError = CCError(reason: "noData")
+    }
+    
+    var numberOfRows: MutableProperty<Int> = MutableProperty(2)
+}
+
 
 class LoginViewModel {
     struct CCError: Error {
@@ -27,6 +37,18 @@ class LoginViewModel {
     var error: Signal<String?, NoError>
     
     var buttonEnabled: MutableProperty<Bool> = MutableProperty(false)
+    
+    var action = Action<() ,String, NoError> { (input) -> SignalProducer<String, NoError> in
+        print("input: ", input)
+        return SignalProducer({ (obsever, _) in
+            obsever.send(value: "2333")
+            obsever.send(value: "66666")
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+                obsever.send(value: "77777")
+                obsever.sendCompleted()
+            })
+        })
+    }
     
     init() {
         error = Property.combineLatest(username.result, password.result)

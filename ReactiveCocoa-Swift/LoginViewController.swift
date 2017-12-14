@@ -37,10 +37,20 @@ class LoginViewController: UIViewController {
         viewModel.username <~ usernameTextField.reactive.continuousTextValues.skipNil()
         viewModel.password <~ passwordTextField.reactive.continuousTextValues.skipNil()
         
+        errorMessageLabel.reactive.text <~ viewModel.error
+        
+        loginButton.reactive.pressed = CocoaAction.init(viewModel.action)
         loginButton.reactive.isEnabled <~ viewModel.buttonEnabled
         viewModel.buttonEnabled <~ usernameTextField.reactive.continuousTextValues.skipNil().combineLatest(with: passwordTextField.reactive.continuousTextValues.skipNil()).map({$0.0.count > 0 && $0.1.count > 0})
         
-        errorMessageLabel.reactive.text <~ viewModel.error
+        viewModel.action.values.observeValues { (str) in
+            print("button Action", str)
+            
+        }
+        
+        viewModel.action.completed.observeValues { [unowned self]  in
+            self.performSegue(withIdentifier: "tableView_demo", sender: nil)
+        }
         
     }
 
